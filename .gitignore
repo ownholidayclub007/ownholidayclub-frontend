@@ -1,0 +1,72 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+.build/
+
+# Production
+/build/
+/dist/
+
+# Env files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs_* 
+*.njsproj
+*.sln
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vercel/
+
+# Lockfiles (optional - keep if you want deterministic installs)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Optional: local npm cache
+.npm/
+
+# Storybook
+.out/
+
+# Build output of various tools
+dist/
+
+# Ignore public uploads or large assets (uncomment if needed)
+# public/uploads/
+# static/uploads/
