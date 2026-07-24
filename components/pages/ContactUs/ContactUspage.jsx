@@ -58,7 +58,7 @@ export default function ContactUspage() {
   });
   const [heroData, setHeroData] = useState(null);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -111,7 +111,7 @@ export default function ContactUspage() {
     setSubmitting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/contact-enquiries`,
+        `${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com"}/api/contact-enquiries`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

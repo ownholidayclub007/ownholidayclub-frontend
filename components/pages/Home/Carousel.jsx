@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 
 const STATIC_SLIDES = [
   { title: "Membership plans for every family", left: "Other travel companies", leftText: "Pay per trip with no long-term benefits. Prices change every season and family members are charged separately.", right: "Own Holiday Club", rightText: "One membership covers Member + Spouse + 2 kids with long-term validity and fixed pricing — no hidden surprises." },

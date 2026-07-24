@@ -16,7 +16,7 @@ const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80";
 const handleImageError = createImageFallback(FALLBACK_IMAGE);
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ServiceDetailPage({ serviceId }) {

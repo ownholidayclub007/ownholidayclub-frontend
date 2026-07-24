@@ -6,7 +6,7 @@ import { CheckCircle2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -344,20 +344,20 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={openLeadModal}
-                  className="shrink-0 whitespace-nowrap rounded-full bg-amber-500 px-4 py-2 sm:px-8 sm:py-3.5 text-[11px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-900 transition-all duration-300 hover:bg-amber-400 hover:scale-105 shadow-xl shadow-amber-500/20"
+                  className="shrink-0 whitespace-nowrap rounded-full bg-amber-500 px-3 py-2 sm:px-8 sm:py-3.5 text-[8px] sm:text-[12px] font-bold uppercase tracking-widest text-slate-900 transition-all duration-300 hover:bg-amber-400 hover:scale-105 shadow-xl shadow-amber-500/20"
                 >
                   {activeSlide?.button1Text || "Book Holiday"}
                 </button>
                 {activeSlide?.button2Link && (
                   <Link href={activeSlide.button2Link}>
-                    <button className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-4 py-2 sm:px-8 sm:py-3.5 text-[11px] sm:text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-slate-900 hover:scale-105">
+                    <button className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-3 py-2 sm:px-8 sm:py-3.5 text-[8px] sm:text-[12px] font-bold uppercase tracking-widest text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-slate-900 hover:scale-105">
                       {activeSlide?.button2Text || "Memberships"}
                     </button>
                   </Link>
                 )}
                 {activeSlide?.button3Link && (
                   <Link href={activeSlide.button3Link}>
-                    <button className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-4 py-2 sm:px-8 sm:py-3.5 text-[11px] sm:text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-slate-900 hover:scale-105">
+                    <button className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-3 py-2 sm:px-8 sm:py-3.5 text-[8px] sm:text-[12px] font-bold uppercase tracking-widest text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-slate-900 hover:scale-105">
                       {activeSlide?.button3Text || "Plan Event"}
                     </button>
                   </Link>

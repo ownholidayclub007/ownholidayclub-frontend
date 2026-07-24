@@ -24,7 +24,7 @@ export default function Footer() {
 
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL ||
-    "http://localhost:8081";
+    "https://api.ownholidayclub.com";
 
   const handleNewsletterSubmit = async (event) => {
     event.preventDefault();

@@ -8,7 +8,7 @@ import Hero from "./Hero";
 import { createImageFallback } from "@/lib/createImageFallback";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 
 // Fallback image handler
 const FALLBACK_IMAGE =

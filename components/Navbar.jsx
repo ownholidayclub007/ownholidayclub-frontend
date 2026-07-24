@@ -63,7 +63,7 @@ export default function Navbar({ onLoginClick }) {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/settings`)
+    fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com"}/api/settings`)
       .then(res => res.json())
       .then(result => {
         if (result.success && result.data?.logo) setLogo(result.data.logo);

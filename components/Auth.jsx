@@ -10,7 +10,7 @@ const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80";
 const handleImageError = createImageFallback(FALLBACK_IMAGE);
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+  process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com";
 
 // ─── Bubble config — same pattern as MarqueeStrip ────────────────────────────
 const bubbles = [

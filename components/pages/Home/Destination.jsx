@@ -209,7 +209,7 @@ export default function Destinations() {
       try {
         const [destRes, headRes] = await Promise.all([
           fetchDestinations(),
-          fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/destinations/headings/public`).then((r) => r.json()),
+          fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com"}/api/destinations/headings/public`).then((r) => r.json()),
         ]);
         setDestinationsData({
           domestic: destRes.filter((d) => d.region?.toLowerCase() === "domestic"),

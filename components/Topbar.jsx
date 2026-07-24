@@ -28,7 +28,7 @@ const Topbar = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/settings`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "https://api.ownholidayclub.com"}/api/settings`);
         const data = await res.json();
         if (data.success) {
           setSettings(data.data);
