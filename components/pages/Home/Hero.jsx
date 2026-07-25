@@ -344,7 +344,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={openLeadModal}
-                  className="shrink-0 whitespace-nowrap rounded-full bg-amber-500 px-3 py-2 sm:px-8 sm:py-3.5 text-[8px] sm:text-[12px] font-bold uppercase tracking-widest text-slate-900 transition-all duration-300 hover:bg-amber-400 hover:scale-105 shadow-xl shadow-amber-500/20"
+                  className="shrink-0 whitespace-nowrap rounded-full bg-blue-600 px-3 py-2 sm:px-8 sm:py-3.5 text-[8px] sm:text-[12px] font-bold uppercase tracking-widest text-white transition-all duration-300 hover:bg-blue-500 hover:scale-105 shadow-xl shadow-blue-500/20"
                 >
                   {activeSlide?.button1Text || "Book Holiday"}
                 </button>
