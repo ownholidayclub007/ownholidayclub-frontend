@@ -392,7 +392,7 @@ export default function Hero() {
 
               <div className="flex w-full items-center justify-center gap-1">
                 <Link
-                  href="https://play.google.com/store/apps/details?id=rigel.ownholiday.club"
+                  href="https://play.google.com/store/apps/details?id=com.ownholidayclub.app"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Get it on Google Play"
@@ -438,7 +438,7 @@ export default function Hero() {
 
               <div className="flex w-full items-center justify-between gap-3">
                 <Link
-                  href="https://play.google.com/store/apps/details?id=rigel.ownholiday.club"
+                  href="https://play.google.com/store/apps/details?id=com.ownholidayclub.app"
                   target="_blank"
                   className="flex items-center justify-center overflow-hidden rounded-md  shadow-sm transition-transform duration-300 hover:-translate-y-1"
                 >
