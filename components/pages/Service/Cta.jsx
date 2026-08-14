@@ -23,7 +23,7 @@ export default function ServiceCtaSection() {
             Connect with our dedicated concierge team to begin crafting an
             unforgettable experience tailored to your vision.
           </p>
-          <Link href="/contact">
+          <Link href="/contactus">
             <button className="group relative inline-flex items-center gap-8 bg-slate-950 text-white pl-12 pr-4 py-4 rounded-full hover:bg-amber-500 transition-all duration-700 shadow-[0_30px_60px_-15px_rgba(15,23,42,0.4)] active:scale-95 font-sans">
               <span className="text-sm font-black uppercase tracking-[0.2em]">
                 Request a Consultation

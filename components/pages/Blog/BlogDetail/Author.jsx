@@ -17,7 +17,7 @@ export default function Author({ articleData }) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-center md:text-left flex-1">
+            {/* <div className="text-center md:text-left flex-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2 block">
                 Written By
               </span>
@@ -33,7 +33,30 @@ export default function Author({ articleData }) {
               <button className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-900 hover:text-amber-600 transition-colors border-b-2 border-amber-500 pb-1">
                 More From {articleData.author.name.split(" ")[0]} <ArrowRight size={14} />
               </button>
-            </div>
+            </div> */}
+
+            <div className="text-center md:text-left flex-1">
+
+  <span className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2 block">
+    Written By
+  </span>
+
+  {/* Author Name */}
+  <h3 className="text-2xl font-bold font-serif text-slate-900 mb-1">
+    {articleData.author.name}
+  </h3>
+
+  {/* Author Role */}
+  <p className="text-sm font-bold text-slate-500 mb-4 font-sans">
+    {articleData.author.role}
+  </p>
+
+  {/* Author Bio */}
+  <p className="text-slate-600 leading-relaxed font-sans mb-6">
+    {articleData.author.bio}
+  </p>
+
+</div>
           </div>
         </ScrollAnimate>
       </div>
