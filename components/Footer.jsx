@@ -16,7 +16,9 @@ import {
   Youtube,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 
 export default function Footer() {
@@ -144,18 +146,20 @@ export default function Footer() {
         color: "#fff",
       }}
     >
-      {/* Background Image with Parallax Effect */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url('${getOptimizedImageUrl(settings.footerBgImage || "/footerimage.jpg", 1200)}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-          zIndex: 0,
-        }}
-      />
+      {/* Background Image — Next.js Image for auto WebP/AVIF optimization (760 KiB → ~70 KiB) */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <Image
+          src={settings.footerBgImage || "/footerimage.jpg"}
+          alt="Footer background"
+          fill
+          sizes="100vw"
+          quality={55}
+          loading="lazy"
+          className="object-cover object-center"
+          style={{ backgroundAttachment: "fixed" }}
+          unoptimized={!!(settings.footerBgImage && settings.footerBgImage.includes("cloudinary"))}
+        />
+      </div>
       {/* Dark Overlay for readability */}
       <div
         style={{

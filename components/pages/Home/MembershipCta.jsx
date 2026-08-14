@@ -141,9 +141,12 @@ export default function App() {
                   <div className="relative z-10 w-full aspect-[3/4] overflow-hidden rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)] group border border-slate-200 bg-white p-3">
                     <div className="w-full h-full overflow-hidden rounded-[2.2rem]">
                       <img
-                        src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=90"
+                        src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=480&q=65"
                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
                         alt="Luxury Hotel"
+                        loading="lazy"
+                        width="480"
+                        height="640"
                       />
                     </div>
                     <div className="absolute inset-0 bg-amber-900/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
@@ -152,9 +155,12 @@ export default function App() {
                   {/* Secondary Inset Image */}
                   <div className="absolute -bottom-16 -left-12 md:-left-24 w-3/4 aspect-square z-20 overflow-hidden rounded-[3rem] border-[16px] border-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] animate-float bg-white">
                     <img
-                      src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=800&q=80"
+                      src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=380&q=65"
                       className="w-full h-full object-cover"
                       alt="Resort Pool"
+                      loading="lazy"
+                      width="380"
+                      height="380"
                     />
                   </div>
 

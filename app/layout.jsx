@@ -51,6 +51,8 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://api.ownholidayclub.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Non-blocking font loading — media="print" trick defers until after render */}
         <link

@@ -19,28 +19,28 @@ const SplitBackground = () => (
   </div>
 );
 
-const DEFAULT_BG_IMAGE = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80";
+const DEFAULT_BG_IMAGE = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=65";
 
 const DEFAULT_FAQS = [
   {
     q: "How does the vacation membership work?",
     a: "Our membership gives you annual credits that can be used across 1,000+ resorts globally. You pay a one-time membership fee and enjoy wholesale rates forever.",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=580&q=65",
   },
   {
     q: "Can I transfer my membership to family?",
     a: "Yes, our memberships are multi-generational. You can transfer your rights to immediate family members at no extra cost.",
-    image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=580&q=65",
   },
   {
     q: "What happens if I don't use my credits this year?",
     a: "No problem! Your credits roll over to the next year automatically, so you never lose the value of your investment.",
-    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=580&q=65",
   },
   {
     q: "Are there any hidden maintenance fees?",
     a: "Transparency is our core value. All nominal maintenance fees are clearly outlined in your membership tier and remain locked for 3 years at a time.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=580&q=65",
   },
 ];
 
@@ -149,7 +149,7 @@ export default function Faq() {
               >
                 {/* Default image when nothing open */}
                 <img
-                  src={getOptimizedImageUrl(mainImage, 750)}
+                  src={getOptimizedImageUrl(mainImage, 580)}
                   alt="FAQ default"
                   loading="lazy"
                   className={`faq-img-slot${noneOpen ? " faq-img-active" : ""}`}
@@ -160,7 +160,7 @@ export default function Faq() {
                 {faqs.map((faq, idx) => (
                   <img
                     key={idx}
-                    src={getOptimizedImageUrl(faq.image || DEFAULT_FAQS[idx % DEFAULT_FAQS.length]?.image, 750)}
+                    src={getOptimizedImageUrl(faq.image || DEFAULT_FAQS[idx % DEFAULT_FAQS.length]?.image, 580)}
                     alt={faq.q || "FAQ image"}
                     loading="lazy"
                     className={`faq-img-slot${openFaq === idx ? " faq-img-active" : ""}`}

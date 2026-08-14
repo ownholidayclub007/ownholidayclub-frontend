@@ -276,9 +276,10 @@ export default function Hero() {
               className="absolute inset-0"
             >
               <motion.img
-                src={getOptimizedImageUrl(activeSlide?.image, 1400)}
+                src={getOptimizedImageUrl(activeSlide?.image, 1200)}
                 alt={activeSlide?.altText || "Hero Slide"}
                 fetchPriority="high"
+                decoding="async"
                 initial={{ scale: 1 }}
                 animate={{ scale: 1.15 }}
                 transition={{ duration: 7, ease: "linear" }}

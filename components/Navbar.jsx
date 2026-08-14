@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { CircleUserRound } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, Info, MapPin, Briefcase, Star, Building2,
@@ -98,7 +99,15 @@ export default function Navbar({ onLoginClick }) {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 pl-2 pr-5 py-0.5 rounded-2xl transition-all duration-300 bg-transparent">
-              <img src={getOptimizedImageUrl(logo, 300)} className="w-44" alt="Own Holiday Club Logo" />
+              <Image
+                src={logo}
+                alt="Own Holiday Club Logo"
+                width={176}
+                height={47}
+                className="w-44 h-auto"
+                priority
+                unoptimized={logo.startsWith("http")}
+              />
             </Link>
 
             {/* Desktop links */}
