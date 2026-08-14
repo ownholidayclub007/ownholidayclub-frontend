@@ -17,7 +17,7 @@ const STATIC_SLIDES = [
 ];
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+  /* Fonts loaded globally via layout.jsx — no @import needed here */
 
   .ohc-root {
     font-family: 'Cormorant Garamond', 'Georgia', serif;
@@ -55,7 +55,7 @@ const styles = `
     font-weight: 700;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #b8960c;
+    color: #7a6200;
   }
 
   .ohc-heading {
@@ -230,10 +230,10 @@ const styles = `
   .ohc-reason-label {
     font-family: 'Cormorant Garamond', serif;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: #c4a428;
+    color: #7a6200;
     margin-bottom: 8px;
   }
 
@@ -250,8 +250,8 @@ const styles = `
   .ohc-counter {
     font-family: 'Cormorant Garamond', serif;
     font-size: 13px;
-    font-weight: 400;
-    color: #a09080;
+    font-weight: 600;
+    color: #5a4e44;
     letter-spacing: 0.1em;
     white-space: nowrap;
     padding-top: 4px;
@@ -365,8 +365,8 @@ const styles = `
     margin-bottom: 12px;
   }
 
-  .ohc-col-brand.left-brand { color: #a09080; }
-  .ohc-col-brand.right-brand { color: #b8960c; }
+  .ohc-col-brand.left-brand { color: #5a4e44; }
+  .ohc-col-brand.right-brand { color: #7a6200; }
 
   .ohc-col-text {
     font-family: 'Cormorant Garamond', serif;
@@ -396,15 +396,15 @@ const styles = `
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(184,150,12,0.2);
+    border: 1.5px solid rgba(122,98,0,0.5);
     background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cormorant Garamond', serif;
     font-size: 11px;
-    font-weight: 600;
-    color: #c4a428;
+    font-weight: 700;
+    color: #7a6200;
     letter-spacing: 0.05em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     flex-shrink: 0;
@@ -445,10 +445,10 @@ const styles = `
   .ohc-autoplay-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: #b8960c;
+    color: #7a6200;
   }
 
   .ohc-nav-btns {
@@ -503,10 +503,10 @@ const styles = `
   .ohc-resume-btn {
     font-family: 'Cormorant Garamond', serif;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: #b8960c;
+    color: #7a6200;
     background: none;
     border: none;
     cursor: pointer;

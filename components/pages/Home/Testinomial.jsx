@@ -90,7 +90,7 @@ function TestimonialCard({ card }) {
       <div className="flex items-center justify-between">
         <span
           className="text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full"
-          style={{ background: "#FAEEDA", color: "#854F0B" }}
+          style={{ background: "#FAEEDA", color: "#7a3e00" }}
         >
           {card.tag}
         </span>
@@ -134,8 +134,8 @@ function TestimonialCard({ card }) {
           <p className="text-sm font-semibold text-gray-800 leading-tight">
             {card.name}
           </p>
-          <p className="text-[11px] text-gray-400 flex items-center gap-0.5 mt-0.5">
-            <MapPin size={10} className="text-gray-400" />
+          <p className="text-[11px] text-gray-600 flex items-center gap-0.5 mt-0.5">
+            <MapPin size={10} className="text-gray-500" />
             {card.location}
           </p>
         </div>
@@ -159,7 +159,7 @@ export default function TestimonialSection() {
             />
             <span
               className="text-xs font-semibold uppercase tracking-widest"
-              style={{ color: "#BA7517" }}
+              style={{ color: "#8a5200" }}
             >
               What travellers say
             </span>
@@ -182,15 +182,18 @@ export default function TestimonialSection() {
             <button
               key={i}
               onClick={() => setPage(i)}
-              className="h-2 rounded-full transition-all duration-300"
-              style={{
-                width: page === i ? "20px" : "7px",
-                background: page === i ? "#BA7517" : "#D1D5DB",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className="flex items-center justify-center p-3 -m-3 rounded-full transition-all duration-300"
               aria-label={`Page ${i + 1}`}
-            />
+            >
+              <span
+                className="block h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: page === i ? "20px" : "7px",
+                  background: page === i ? "#8a5200" : "#9CA3AF",
+                  display: "block",
+                }}
+              />
+            </button>
           ))}
         </div>
       </div>
