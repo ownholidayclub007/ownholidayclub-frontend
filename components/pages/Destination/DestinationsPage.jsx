@@ -61,12 +61,42 @@ export default function Destinations() {
 
   const filteredAndSearchedDestinations = enrichedDestinations.filter((dest) => {
     const matchesFilter = filter === "All" || dest.region === filter;
-    const matchesSearch =
-      dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dest.tag.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dest.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    const query = String(searchQuery || "").trim().toLowerCase();
+
+    const searchableText = [
+      dest?.name,
+      dest?.tag,
+      dest?.tagline,
+      dest?.location,
+      dest?.shortDescription,
+      dest?.fullDescription,
+      dest?.desc,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    const matchesSearch = !query || searchableText.includes(query);
+
     return matchesFilter && matchesSearch;
   });
+
+  const destinationSuggestions = enrichedDestinations
+    .map((dest) => ({
+      label: dest?.name || "",
+      slug: dest?.slug || dest?._id || dest?.id || "",
+    }))
+    .filter((item) => item.label)
+    .filter(
+      (item, index, array) =>
+        array.findIndex((entry) => entry.label.toLowerCase() === item.label.toLowerCase()) === index,
+    )
+    .filter((item) => {
+      const query = String(searchQuery || "").trim().toLowerCase();
+      if (!query) return true;
+      return item.label.toLowerCase().includes(query);
+    })
+    .slice(0, 6);
 
   // Calculate pagination
   const totalPages = Math.ceil(
@@ -88,6 +118,7 @@ export default function Destinations() {
         setFilter={setFilter}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        destinationSuggestions={destinationSuggestions}
         currentDestinations={currentDestinations}
         currentPage={currentPage}
         totalPages={totalPages}

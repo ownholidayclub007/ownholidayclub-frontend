@@ -1,10 +1,74 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Mail } from "lucide-react";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
 
 export default function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [newsletterState, setNewsletterState] = useState("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+
+  const handleNewsletterSubmit = async (event) => {
+    event.preventDefault();
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setNewsletterState("error");
+      setNewsletterMessage("Please enter a valid email address.");
+      window.setTimeout(() => {
+        setNewsletterState("idle");
+        setNewsletterMessage("");
+      }, 3000);
+      return;
+    }
+
+    setNewsletterState("submitting");
+    setNewsletterMessage("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/newsletter-subscriptions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail, source: "blog-detail-newsletter" }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Unable to subscribe right now.");
+      }
+
+      setNewsletterState("success");
+      setNewsletterMessage(data?.message || "Thanks for subscribing.");
+      setEmail("");
+
+      window.setTimeout(() => {
+        setNewsletterState("idle");
+        setNewsletterMessage("");
+      }, 3000);
+    } catch (error) {
+      setNewsletterState("error");
+      setNewsletterMessage(error.message || "Unable to subscribe right now.");
+
+      window.setTimeout(() => {
+        setNewsletterState("idle");
+        setNewsletterMessage("");
+      }, 3000);
+    }
+  };
+
+  const handleNewsletterChange = (event) => {
+    setEmail(event.target.value);
+    if (newsletterState !== "idle") {
+      setNewsletterState("idle");
+      setNewsletterMessage("");
+    }
+  };
+
   return (
     <section className="py-32 bg-slate-950 text-white relative overflow-hidden rounded-[4rem] md:rounded-[6rem] mx-4 md:mx-8 my-12 z-20 shadow-2xl">
       <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-screen pointer-events-none z-10"></div>
@@ -33,25 +97,40 @@ export default function Newsletter() {
 
           <form
             className="max-w-xl mx-auto relative group"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleNewsletterSubmit}
           >
             <input
               type="email"
+              value={email}
+              onChange={handleNewsletterChange}
               placeholder="Enter your email address..."
               className="w-full pl-8 pr-40 py-5 rounded-full bg-white/5 border border-white/20 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all font-sans text-lg backdrop-blur-md"
-              required
+              disabled={newsletterState === "submitting"}
+              aria-label="Email address"
             />
             <button
               type="submit"
-              className="absolute right-2 top-2 bottom-2 bg-amber-500 text-white px-8 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-lg flex items-center gap-2"
+              disabled={newsletterState === "submitting"}
+              className="absolute right-2 top-2 bottom-2 bg-amber-500 text-white px-8 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-lg flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Subscribe
+              {newsletterState === "submitting" ? "Joining..." : "Subscribe"}
             </button>
           </form>
-          <p className="mt-6 text-slate-500 text-xs font-sans">
-            By subscribing, you agree to our Privacy Policy. No spam, just pure
-            wanderlust.
-          </p>
+
+          {newsletterMessage ? (
+            <p
+              className={`mt-6 text-xs font-sans ${
+                newsletterState === "error" ? "text-red-400" : "text-emerald-400"
+              }`}
+            >
+              {newsletterMessage}
+            </p>
+          ) : (
+            <p className="mt-6 text-slate-500 text-xs font-sans">
+              By subscribing, you agree to our Privacy Policy. No spam, just pure
+              wanderlust.
+            </p>
+          )}
         </ScrollAnimate>
       </div>
     </section>

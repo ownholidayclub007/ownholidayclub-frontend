@@ -16,17 +16,29 @@ export default function Grid({
   setFilter,
   searchQuery,
   setSearchQuery,
+  destinationSuggestions = [],
   currentDestinations,
   currentPage,
   totalPages,
   setCurrentPage,
   onImageError,
 }) {
+  const [isSearchFocused, setIsSearchFocused] = React.useState(false);
+
+  const visibleSuggestions =
+    isSearchFocused && (
+      searchQuery.trim().length > 0
+        ? destinationSuggestions.filter((item) =>
+            item.label.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+          )
+        : destinationSuggestions
+    );
+
   return (
-    <section className="py-12 bg-transparent relative z-10 min-h-screen">
+    <section className="py-12 bg-transparent relative z-10 min-h-screen overflow-visible">
       <div className="site-width mx-auto">
         {/* Controls Bar: Title, Search, and Tabs */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-16 gap-6 w-full border-b border-slate-200 pb-8">
+        <div className="relative z-20 flex flex-col lg:flex-row items-start lg:items-center justify-between mb-16 gap-6 w-full border-b border-slate-200 pb-8 overflow-visible">
           <ScrollAnimate animation="reveal-left" className="shrink-0">
             <h3 className="text-2xl font-bold font-serif text-slate-900">
               Featured Locations
@@ -39,7 +51,7 @@ export default function Grid({
             className="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
           >
             {/* Search Bar */}
-            <div className="relative w-full sm:w-64 md:w-80 group">
+            <div className="relative z-[70] w-full sm:w-64 md:w-80 group">
               <Search
                 size={18}
                 className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-amber-500 transition-colors"
@@ -48,9 +60,38 @@ export default function Grid({
                 type="text"
                 placeholder="Search destinations..."
                 value={searchQuery}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => {
+                  window.setTimeout(() => setIsSearchFocused(false), 120);
+                }}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-6 py-3.5 rounded-full border border-slate-200 bg-white shadow-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all font-sans text-sm text-slate-700 placeholder:text-slate-400"
+                className="w-full pl-12 pr-6 py-3.5 rounded-full border border-amber-400 bg-white shadow-[0_8px_30px_rgba(245,158,11,0.12)] focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all font-sans text-sm text-slate-700 placeholder:text-slate-400"
               />
+
+              {visibleSuggestions && visibleSuggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-[60] mt-2 overflow-hidden rounded-[1.4rem] border border-slate-200 bg-white/95 shadow-[0_20px_45px_rgba(15,23,42,0.12)] backdrop-blur-sm">
+                  {visibleSuggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.slug || suggestion.label}
+                      type="button"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => {
+                        setSearchQuery(suggestion.label);
+                        setIsSearchFocused(false);
+                      }}
+                      className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-amber-50 hover:text-amber-700"
+                    >
+                      <span className="flex items-center gap-2">
+                        <MapPin size={14} className="text-amber-500" />
+                        {suggestion.label}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                        Explore
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Filter Tabs */}

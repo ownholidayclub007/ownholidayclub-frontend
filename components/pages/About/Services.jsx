@@ -115,7 +115,7 @@ export default function Services() {
                     {[
                       { name: "Wedding Planning", url: "/services/weddings" },
                       { name: "Corporate Events", url: "/services/corporate-events" },
-                      { name: "Destination Weddings", url: "/services/destination-weddings" },
+                      { name: "Destination Weddings", url: "/services/weddings" },
                       { name: "Parties", url: "/services/private-parties" },
                     ].map((tag, i) => (
                       <Link
@@ -161,4 +161,3 @@ export default function Services() {
     </section>
   );
 }
-
