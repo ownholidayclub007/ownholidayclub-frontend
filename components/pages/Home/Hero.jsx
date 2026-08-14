@@ -4,9 +4,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -274,8 +276,9 @@ export default function Hero() {
               className="absolute inset-0"
             >
               <motion.img
-                src={activeSlide?.image}
-                alt={activeSlide?.altText || ""}
+                src={getOptimizedImageUrl(activeSlide?.image, 1400)}
+                alt={activeSlide?.altText || "Hero Slide"}
+                fetchPriority="high"
                 initial={{ scale: 1 }}
                 animate={{ scale: 1.15 }}
                 transition={{ duration: 7, ease: "linear" }}
@@ -380,7 +383,8 @@ export default function Hero() {
 
           <img
             src="/curveline.png"
-            alt=""
+            alt="Curve divider"
+            fetchPriority="high"
             className="absolute inset-0 z-20 h-full w-full"
           />
 

@@ -4,6 +4,8 @@ import { ArrowRight, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
 import Link from "next/link";
 import { fetchDestinations } from "@/lib/destinations";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 /* ── Animated Counter ── */
 const AnimatedCounter = ({ target, duration = 2000 }) => {
@@ -362,8 +364,9 @@ function DestCard({ data, isHero = false }) {
     <div className="absolute inset-0 transition-opacity duration-1000">
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src={data.image}
-          alt={data.name}
+          src={getOptimizedImageUrl(data.image, isHero ? 1000 : 600)}
+          alt={data.name || "Destination"}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/10 to-transparent" />

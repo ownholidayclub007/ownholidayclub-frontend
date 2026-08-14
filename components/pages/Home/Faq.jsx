@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Plus, Minus, Mail } from "lucide-react";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
 import { api } from "@/lib/api";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 const SplitBackground = () => (
   <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
@@ -147,8 +149,9 @@ export default function Faq() {
               >
                 {/* Default image when nothing open */}
                 <img
-                  src={mainImage}
+                  src={getOptimizedImageUrl(mainImage, 750)}
                   alt="FAQ default"
+                  loading="lazy"
                   className={`faq-img-slot${noneOpen ? " faq-img-active" : ""}`}
                   style={{ zIndex: noneOpen ? 2 : 1 }}
                 />
@@ -157,8 +160,9 @@ export default function Faq() {
                 {faqs.map((faq, idx) => (
                   <img
                     key={idx}
-                    src={faq.image || DEFAULT_FAQS[idx % DEFAULT_FAQS.length]?.image}
-                    alt={faq.q}
+                    src={getOptimizedImageUrl(faq.image || DEFAULT_FAQS[idx % DEFAULT_FAQS.length]?.image, 750)}
+                    alt={faq.q || "FAQ image"}
+                    loading="lazy"
                     className={`faq-img-slot${openFaq === idx ? " faq-img-active" : ""}`}
                     style={{ zIndex: openFaq === idx ? 2 : 1 }}
                   />

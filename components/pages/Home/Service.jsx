@@ -4,6 +4,8 @@ import { ArrowRight, Compass, Music, Heart, Briefcase, Sparkles } from "lucide-r
 import ScrollAnimate from "@/components/common/ScrollAnimate";
 import Link from "next/link";
 import { fetchExploreServicesData } from "@/lib/services";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 const getServiceIcon = (title = "", category = "") => {
   const value = `${title} ${category}`.toLowerCase();
@@ -331,8 +333,8 @@ export default function Service() {
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     <img
-                      src={image}
-                      alt={service.title}
+                      src={getOptimizedImageUrl(image, 600)}
+                      alt={service.title || "Service"}
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />

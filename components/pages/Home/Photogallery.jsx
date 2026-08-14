@@ -8,6 +8,8 @@ import {
   Share2,
 } from "lucide-react";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 const galleryImages = [
   [
@@ -135,7 +137,7 @@ export default function App() {
                     >
                       {/* Image Layer */}
                       <img
-                        src={img.src}
+                        src={getOptimizedImageUrl(img.src, 600)}
                         className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                         alt={img.tag}
                         loading="lazy"

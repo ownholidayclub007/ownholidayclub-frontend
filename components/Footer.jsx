@@ -16,6 +16,8 @@ import {
   Youtube,
 } from "lucide-react";
 import Link from "next/link";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -147,7 +149,7 @@ export default function Footer() {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `url('${settings.footerBgImage || "/footerimage.jpg"}')`,
+          backgroundImage: `url('${getOptimizedImageUrl(settings.footerBgImage || "/footerimage.jpg", 1200)}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
@@ -236,17 +238,18 @@ export default function Footer() {
             {/* Social icons */}
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {[
-                { Icon: Facebook,  link: socialMedia.facebook },
-                { Icon: Instagram, link: socialMedia.instagram },
-                { Icon: Twitter,   link: socialMedia.twitter },
-                { Icon: Linkedin,  link: socialMedia.linkedin },
-                { Icon: Youtube,   link: socialMedia.youtube },
-              ].filter(s => s.link).map(({ Icon, link }, i) => (
+                { Icon: Facebook,  link: socialMedia.facebook, label: "Facebook" },
+                { Icon: Instagram, link: socialMedia.instagram, label: "Instagram" },
+                { Icon: Twitter,   link: socialMedia.twitter, label: "Twitter" },
+                { Icon: Linkedin,  link: socialMedia.linkedin, label: "LinkedIn" },
+                { Icon: Youtube,   link: socialMedia.youtube, label: "YouTube" },
+              ].filter(s => s.link).map(({ Icon, link, label }, i) => (
                 <Link
                   key={i}
                   href={link}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label={`Visit our ${label} page`}
                   style={{
                     width: 34, height: 34, borderRadius: "50%",
                     background: "#f59e0b",

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { fetchBlogPosts } from "@/lib/blogs";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 export default function BlogSection() {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -118,8 +120,9 @@ export default function BlogSection() {
                     style={{ position: "relative", height: "188px", overflow: "hidden", flexShrink: 0 }}
                   >
                     <img
-                      src={post.image}
-                      alt={post.title}
+                      src={getOptimizedImageUrl(post.image, 600)}
+                      alt={post.title || "Blog Post"}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                       style={{ transition: "transform 0.65s", display: "block" }}
                       onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}

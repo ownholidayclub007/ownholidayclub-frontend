@@ -9,6 +9,8 @@ import {
   Phone, User, CalendarDays, Globe, ChevronDown,
   LayoutGrid, X, Lock, ExternalLink, BookOpen
 } from "lucide-react";
+import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
+
 
 const NAV_LINKS = [
   { label: "Home", href: "/", icon: Home },
@@ -96,7 +98,7 @@ export default function Navbar({ onLoginClick }) {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 pl-2 pr-5 py-0.5 rounded-2xl transition-all duration-300 bg-transparent">
-              <img src={logo} className="w-44" alt="Own Holiday Club Logo" />
+              <img src={getOptimizedImageUrl(logo, 300)} className="w-44" alt="Own Holiday Club Logo" />
             </Link>
 
             {/* Desktop links */}

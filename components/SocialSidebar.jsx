@@ -364,6 +364,7 @@ const SocialSidebar = () => {
                   href={safeHref(social.url)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={social.label}
                   className="social-btn"
                   style={{
                     background: social.bg,
