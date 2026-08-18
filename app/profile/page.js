@@ -1,4 +1,4 @@
-import ProfilePage from "@/components/pages/Profile/ProfilePage";
+import ProfilePage from "@/components/pages/Profile/Profilepage";
 import React, { Suspense } from "react";
 import { getCombinedMetadata } from "@/lib/metadata";
 

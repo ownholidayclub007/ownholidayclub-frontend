@@ -1,4 +1,4 @@
-import Sitemap from "@/components/pages/Sitemap/SitemapPage";
+import Sitemap from "@/components/pages/Sitemap/Sitemappage";
 import React from "react";
 import { getSitemapRoutes } from "@/lib/sitemap";
 import { getCombinedMetadata } from "@/lib/metadata";
