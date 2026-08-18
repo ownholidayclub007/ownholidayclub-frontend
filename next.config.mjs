@@ -21,39 +21,6 @@ const nextConfig = {
       },
     ],
   },
-  async headers() {
-    return [
-      {
-        // Correct Next.js header glob — matches all image files in /public
-        source: '/:path*(\.jpg|\.jpeg|\.png|\.gif|\.webp|\.avif|\.ico|\.svg)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Next.js optimized image endpoint
-        source: '/_next/image:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ];
-  },
 };
 
 export default nextConfig;
