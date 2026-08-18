@@ -69,7 +69,7 @@ export default function Navbar({ onLoginClick }) {
     fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/settings`)
       .then(res => res.json())
       .then(result => {
-        if (result.success && result.data?.logo) setLogo(result.data.logo);
+        if (result.success && result.data?.logo) setLogo(getOptimizedImageUrl(result.data.logo, 350));
       })
       .catch(err => console.error("Logo fetch error:", err));
   }, []);

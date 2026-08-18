@@ -12,6 +12,27 @@ const API_BASE_URL =
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const GooglePlayBadge = ({ className }) => (
+  <svg className={className} viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="135" height="40" rx="5" fill="#000000"/>
+    <path d="M14 10.5v19l10.2-9.5L14 10.5z" fill="#00D2FF"/>
+    <path d="M28.4 20L24.2 15.8 14 10.5 28.4 20z" fill="#00E676"/>
+    <path d="M28.4 20L14 29.5l10.2-5.3L28.4 20z" fill="#FF3D00"/>
+    <path d="M28.4 20l3.8-2.1c1.1-.6 1.1-1.6 0-2.2L28.4 20z" fill="#FFC107"/>
+    <text x="38" y="16" fill="#FFFFFF" fontSize="7" fontFamily="sans-serif" letterSpacing="0.5">GET IT ON</text>
+    <text x="38" y="27" fill="#FFFFFF" fontSize="11" fontWeight="bold" fontFamily="sans-serif">Google Play</text>
+  </svg>
+);
+
+const AppStoreBadge = ({ className }) => (
+  <svg className={className} viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="135" height="40" rx="5" fill="#000000"/>
+    <path d="M24.8 21.6c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.7 1.1-1 0-2.4-1.1-4-1.1-2.1 0-4 1.2-5 3.1-2.2 3.8-.6 9.4 1.5 12.5 1 1.5 2.2 3.1 3.8 3 1.6-.1 2.2-1 4.1-1s2.5 1 4.1 1c1.7 0 2.8-1.5 3.8-3 1.2-1.7 1.7-3.4 1.7-3.5-.1-.1-3.5-1.3-3.5-5.2zm-3.6-9.1c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.5 1.8-.7.8-1.4 2.2-1.2 3.6 1.3.1 2.7-.6 3.5-1.6z" fill="#FFFFFF"/>
+    <text x="38" y="16" fill="#FFFFFF" fontSize="7" fontFamily="sans-serif" letterSpacing="0.5">Download on the</text>
+    <text x="38" y="27" fill="#FFFFFF" fontSize="11" fontWeight="bold" fontFamily="sans-serif">App Store</text>
+  </svg>
+);
+
 // Mock ScrollAnimate to ensure the preview runs independently
 const ScrollAnimate = ({ children, animation, delay = 0, className = "" }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -403,11 +424,7 @@ export default function Hero() {
                   aria-label="Get it on Google Play"
                   className="inline-flex items-center justify-center overflow-hidden rounded-[4px] transition-transform duration-300 hover:-translate-y-0.5"
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                    alt="Get it on Google Play"
-                    className="h-[18px] w-auto object-contain"
-                  />
+                  <GooglePlayBadge className="h-[18px] w-auto object-contain" />
                 </Link>
                 <Link
                   href="https://apps.apple.com/in/app/own-holiday-club/id6741328417"
@@ -416,11 +433,7 @@ export default function Hero() {
                   aria-label="Download on the App Store"
                   className="inline-flex items-center justify-center overflow-hidden rounded-[4px] transition-transform duration-300 hover:-translate-y-0.5"
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
-                    alt="Download on the App Store"
-                    className="h-[18px] w-auto object-contain"
-                  />
+                  <AppStoreBadge className="h-[18px] w-auto object-contain" />
                 </Link>
               </div>
             </div>
@@ -445,24 +458,16 @@ export default function Hero() {
                 <Link
                   href="https://play.google.com/store/apps/details?id=com.ownholidayclub.app"
                   target="_blank"
-                  className="flex items-center justify-center overflow-hidden rounded-md  shadow-sm transition-transform duration-300 hover:-translate-y-1"
+                  className="flex items-center justify-center overflow-hidden rounded-md shadow-sm transition-transform duration-300 hover:-translate-y-1"
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                    alt="Get it on Google Play"
-                    className="h-12 w-16 cursor-pointer object-contain p-0.5 md:h-11 md:w-[88px] lg:h-12 lg:w-24"
-                  />
+                  <GooglePlayBadge className="h-12 w-16 cursor-pointer object-contain p-0.5 md:h-11 md:w-[88px] lg:h-12 lg:w-24" />
                 </Link>
                 <Link
                   href="https://apps.apple.com/in/app/own-holiday-club/id6741328417"
                   target="_blank"
-                  className="flex items-center justify-center overflow-hidden rounded-md  shadow-sm transition-transform duration-300 hover:-translate-y-1"
+                  className="flex items-center justify-center overflow-hidden rounded-md shadow-sm transition-transform duration-300 hover:-translate-y-1"
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
-                    alt="Download on the App Store"
-                    className="h-12 w-16 cursor-pointer object-contain p-0.5 md:h-11 md:w-[88px] lg:h-12 lg:w-24"
-                  />
+                  <AppStoreBadge className="h-12 w-16 cursor-pointer object-contain p-0.5 md:h-11 md:w-[88px] lg:h-12 lg:w-24" />
                 </Link>
               </div>
             </div>

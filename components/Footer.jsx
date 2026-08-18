@@ -211,7 +211,7 @@ export default function Footer() {
             <div style={{ marginBottom: 20, marginTop: -14 }}>
               <Link href="/">
                 <img
-                  src={settings.logo}
+                  src={getOptimizedImageUrl(settings.logo, 350)}
                   alt="Own Holiday Club"
                   style={{
                     height: 52,
