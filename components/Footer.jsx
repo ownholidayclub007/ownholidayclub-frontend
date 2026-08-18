@@ -131,7 +131,7 @@ export default function Footer() {
 
   const LEGAL_LINKS = [
     { text: "Privacy", link: "/privacy-policy" },
-    { text: "Terms", link: "/terms&conditions" },
+    { text: "Terms", link: "/terms-and-conditions" },
     { text: "Refunds", link: "/refund-policy" },
     { text: "Sitemap", link: "/sitemap" },
     { text: "Cookies", link: "/cookie-policy" },

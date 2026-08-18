@@ -3,7 +3,7 @@ import React from "react";
 import { getCombinedMetadata } from "@/lib/metadata";
 
 export async function generateMetadata() {
-  return await getCombinedMetadata("/terms&conditions");
+  return await getCombinedMetadata("/terms-and-conditions");
 }
 
 function page() {
