@@ -3,7 +3,7 @@ import DestinationDetail from "@/components/pages/Destination/DestinationDetail/
 import { fetchDestinationById } from "@/lib/destinations";
 import {
   DESTINATIONS_OG_IMAGE,
-  createDynamicPageMetadata,
+  getCombinedMetadata,
 } from "@/lib/metadata";
 
 export async function generateMetadata({ params }) {
@@ -11,18 +11,16 @@ export async function generateMetadata({ params }) {
   const destination = await fetchDestinationById(slug);
 
   if (!destination) {
-    return createDynamicPageMetadata({
+    return await getCombinedMetadata(`/destinations/${slug}`, {
       title: "Destination Not Found",
       description: "This destination is not available right now.",
-      path: `/destinations/${slug}`,
       image: DESTINATIONS_OG_IMAGE,
     });
   }
 
-  return createDynamicPageMetadata({
+  return await getCombinedMetadata(`/destinations/${slug}`, {
     title: destination.name || "Destination",
     description: destination.shortDescription || destination.desc || destination.description,
-    path: `/destinations/${slug}`,
     image:
       destination.image ||
       destination.heroImage ||

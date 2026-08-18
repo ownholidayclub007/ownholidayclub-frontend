@@ -2,7 +2,7 @@ import DestinationsPage from "@/components/pages/Destination/DestinationsPage";
 import { fetchDestinations } from "@/lib/destinations";
 import {
   DESTINATIONS_OG_IMAGE,
-  createDynamicPageMetadata,
+  getCombinedMetadata,
 } from "@/lib/metadata";
 
 export async function generateMetadata() {
@@ -13,11 +13,10 @@ export async function generateMetadata() {
     destinations[0]?.gallery?.[0] ||
     DESTINATIONS_OG_IMAGE;
 
-  return createDynamicPageMetadata({
+  return await getCombinedMetadata("/destinations", {
     title: "Destinations",
     description:
       "Explore luxury holiday destinations, curated resorts, and memorable getaway ideas from Own Holiday Club.",
-    path: "/destinations",
     image: featuredImage,
   });
 }

@@ -1,25 +1,23 @@
 import React from "react";
 import ServiceDetail from "@/components/pages/Service/ServiceDetail/ServiceDetail";
 import { fetchServiceById } from "@/lib/services";
-import { SERVICES_OG_IMAGE, createDynamicPageMetadata } from "@/lib/metadata";
+import { SERVICES_OG_IMAGE, getCombinedMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({ params }) {
   const slug = params?.id || "";
   const service = await fetchServiceById(slug);
 
   if (!service) {
-    return createDynamicPageMetadata({
+    return await getCombinedMetadata(`/services/${slug}`, {
       title: "Service Not Found",
       description: "This service is not available right now.",
-      path: `/services/${slug}`,
       image: SERVICES_OG_IMAGE,
     });
   }
 
-  return createDynamicPageMetadata({
-    title: service.title || "Service",
+  return await getCombinedMetadata(`/services/${slug}`, {
+    title: service.title || service.serviceTitle || "Service",
     description: service.subtitle || service.description,
-    path: `/services/${slug}`,
     image:
       service.heroImage ||
       service.image ||

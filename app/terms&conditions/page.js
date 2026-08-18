@@ -1,8 +1,10 @@
 import TermsAndConditions from "@/components/pages/Terms/TermsPage";
 import React from "react";
-import { getStaticPageMetadata } from "@/lib/metadata";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/terms&conditions");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/terms&conditions");
+}
 
 function page() {
   return (

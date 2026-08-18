@@ -3,7 +3,7 @@ import BlogDetail from "@/components/pages/Blog/BlogDetail/BlogDetail";
 import { fetchBlogPostById } from "@/lib/blogs";
 import {
   BLOG_OG_IMAGE,
-  createDynamicPageMetadata,
+  getCombinedMetadata,
   getTextExcerpt,
 } from "@/lib/metadata";
 
@@ -12,18 +12,16 @@ export async function generateMetadata({ params }) {
   const post = await fetchBlogPostById(slug);
 
   if (!post) {
-    return createDynamicPageMetadata({
+    return await getCombinedMetadata(`/blog/${slug}`, {
       title: "Article Not Found",
       description: "This blog post is not available right now.",
-      path: `/blog/${slug}`,
       image: BLOG_OG_IMAGE,
     });
   }
 
-  return createDynamicPageMetadata({
+  return await getCombinedMetadata(`/blog/${slug}`, {
     title: post.metaTitle || post.title || "Travel Article",
     description: post.metaDescription || post.excerpt || getTextExcerpt(post.content),
-    path: `/blog/${slug}`,
     image: post.ogImage || post.heroImage || post.image || BLOG_OG_IMAGE,
     type: "article",
     publishedTime: post.publishedAt || post.date,

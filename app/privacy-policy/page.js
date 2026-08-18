@@ -1,8 +1,10 @@
 import PrivacyPolicy from "@/components/pages/Privacy/Privacypage";
 import React from "react";
-import { getStaticPageMetadata } from "@/lib/metadata";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/privacy-policy");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/privacy-policy");
+}
 
 function page() {
   return (

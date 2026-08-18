@@ -54,31 +54,18 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://api.ownholidayclub.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-        {/* Non-blocking font loading — media="print" trick defers until after render */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,300;1,400&family=Inter:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap"
-          media="print"
-          onLoad="this.media='all'"
         />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-          media="print"
-          onLoad="this.media='all'"
         />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700&display=swap"
-          media="print"
-          onLoad="this.media='all'"
         />
-        {/* Fallback for no-JS */}
-        <noscript>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,300;1,400&family=Inter:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700&display=swap" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700&display=swap" />
-        </noscript>
       </head>
       <body className="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
         <noscript>

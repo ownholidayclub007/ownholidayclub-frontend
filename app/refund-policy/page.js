@@ -1,8 +1,10 @@
 import RefundPolicy from "@/components/pages/Refund/Refund";
 import React from "react";
-import { getStaticPageMetadata } from "@/lib/metadata";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/refund-policy");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/refund-policy");
+}
 
 function page() {
   return (

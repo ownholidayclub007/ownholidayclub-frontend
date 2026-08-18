@@ -1,7 +1,9 @@
 import MembershipPage from "@/components/pages/Membership/MembershipPage";
-import { getStaticPageMetadata } from "@/lib/metadata";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/membership");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/membership");
+}
 
 export default function Page() {
   return <MembershipPage />;

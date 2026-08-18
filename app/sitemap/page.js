@@ -1,9 +1,11 @@
-import Sitemap from "@/components/pages/Sitemap/Sitemappage";
+import Sitemap from "@/components/pages/Sitemap/SitemapPage";
 import React from "react";
 import { getSitemapRoutes } from "@/lib/sitemap";
-import { getStaticPageMetadata } from "@/lib/metadata";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/sitemap");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/sitemap");
+}
 
 async function page() {
   const routes = await getSitemapRoutes();

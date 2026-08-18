@@ -1,8 +1,10 @@
 import React from 'react'
-import ListYourProperty from '@/components/pages/ListYourProperty/ListYourProperty'
-import { getStaticPageMetadata } from "@/lib/metadata";
+import ListYourProperty from "@/components/pages/ListYourProperty/ListYourProperty";
+import { getCombinedMetadata } from "@/lib/metadata";
 
-export const metadata = getStaticPageMetadata("/list-your-property");
+export async function generateMetadata() {
+  return await getCombinedMetadata("/list-your-property");
+}
 
 function page() {
   return (
