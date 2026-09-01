@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
 import ScrollAnimate from "@/components/common/ScrollAnimate";
 import Link from "next/link";
-import { fetchDestinations } from "@/lib/destinations";
+import { fetchDestinations, fetchDestinationHeadings } from "@/lib/destinations";
 import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
 
 
@@ -209,15 +209,19 @@ export default function Destinations() {
   useEffect(() => {
     const loadDestinations = async () => {
       try {
-        const [destRes, headRes] = await Promise.all([
-          fetchDestinations(),
-          fetch(`${process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081"}/api/destinations/headings/public`).then((r) => r.json()),
+        const [destRes, headData] = await Promise.all([
+          fetchDestinations().catch(() => []),
+          fetchDestinationHeadings().catch(() => null),
         ]);
-        setDestinationsData({
-          domestic: destRes.filter((d) => d.region?.toLowerCase() === "domestic"),
-          international: destRes.filter((d) => d.region?.toLowerCase() === "international"),
-        });
-        if (headRes.success) setHeadings(headRes.data);
+        if (Array.isArray(destRes)) {
+          setDestinationsData({
+            domestic: destRes.filter((d) => d.region?.toLowerCase() === "domestic"),
+            international: destRes.filter((d) => d.region?.toLowerCase() === "international"),
+          });
+        }
+        if (headData) setHeadings(headData);
+      } catch (err) {
+        console.error("Failed to load destinations:", err);
       } finally {
         setIsLoading(false);
       }
