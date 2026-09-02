@@ -52,6 +52,7 @@ export default function MembershipPurchasePageContent({
   const [mobileState, setMobileState] = useState(createVerificationState);
   const [emailState, setEmailState] = useState(createVerificationState);
   const [feedback, setFeedback] = useState({ type: "", message: "" });
+  const [referralCode, setReferralCode] = useState("");
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [baseUrl, setBaseUrl] = useState("https://www.ownholidayclub.com");
@@ -201,6 +202,38 @@ export default function MembershipPurchasePageContent({
   );
 
   const showToast = (nextFeedback) => setFeedback(nextFeedback);
+
+  const validateEnteredReferralCode = async () => {
+    const enteredCode = referralCode.trim();
+
+    if (!enteredCode) {
+      return true;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/referral-codes/validate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: enteredCode }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data?.valid) {
+        throw new Error(data?.message || "Invalid referral code.");
+      }
+
+      return true;
+    } catch (error) {
+      setFeedback({
+        type: "error",
+        message: error.message || "Invalid referral code.",
+      });
+      return false;
+    }
+  };
 
   const updatePersonal = (field, value) => {
     setForm((prev) => ({
@@ -568,6 +601,11 @@ export default function MembershipPurchasePageContent({
       return;
     }
 
+    const referralValid = await validateEnteredReferralCode();
+    if (!referralValid) {
+      return;
+    }
+
     try {
       setSubmitting(true);
 
@@ -585,6 +623,7 @@ export default function MembershipPurchasePageContent({
       const orderData = await createMembershipPaymentOrder({
         tierId: tier.id,
         memberDetails,
+        referralCode: referralCode.trim(),
       });
 
       const razorpay = new window.Razorpay({
@@ -615,6 +654,7 @@ export default function MembershipPurchasePageContent({
             const verificationResult = await verifyMembershipPayment({
               tierId: tier.id,
               memberDetails,
+              referralCode: referralCode.trim(),
               ...paymentResponse,
             });
 
@@ -776,6 +816,23 @@ export default function MembershipPurchasePageContent({
                   </label>
                 </div>
               )}
+
+              {/*
+              {currentStep === 2 && (
+                <div className="rounded-[1rem] border border-dashed border-amber-200 bg-amber-50/60 p-4">
+                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                    Referral code (optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={referralCode}
+                    onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
+                    placeholder="Enter referral code"
+                    className="w-full border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-amber-500"
+                  />
+                </div>
+              )}
+              */}
 
               <div className="flex flex-col items-center gap-3 pt-4 sm:flex-row sm:justify-center">
                 {currentStep === 2 ? (
