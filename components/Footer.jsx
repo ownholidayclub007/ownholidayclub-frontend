@@ -87,14 +87,14 @@ export default function Footer() {
       { label: "Destination Weddings", path: "/services/weddings" },
       { label: "Corporate Retreats", path: "/services/corporate-events" },
     ],
-    officeAddress: "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
+    officeAddress: "AItF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044",
     contactPhone: "+91-9871984074",
     contactEmail: "membership@ownholidayclub.com",
     workingHours: "Mon – Sat: 9:30 AM – 6:30 PM",
     globalPresence: "New Delhi · Dubai · London",
     footerBgImage: "/footerimage.jpg",
     footerContact: [
-      { label: "New Delhi Office", content: "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India." },
+      { label: "New Delhi Office", content: "AItF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044" },
       { label: "24/7 Concierge", content: "+91-9871984074" }
     ]
   });
@@ -116,7 +116,7 @@ export default function Footer() {
           setSettings({
             ...result.data,
             officeAddress:
-              "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
+              "AItF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044",
             footerContact: [
               ...(Array.isArray(result.data.footerContact)
                 ? result.data.footerContact.filter(
@@ -132,7 +132,7 @@ export default function Footer() {
               {
                 label: "Office Address",
                 content:
-                  "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
+                  "AItF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044",
               },
             ],
           });

@@ -267,7 +267,7 @@ export default function RefundPolicy() {
                           Send Address
                         </p>
                         <p className="text-white text-sm leading-relaxed">
-                        AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.
+                        AItF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044
                         </p>
                       </div>
                     </div>
