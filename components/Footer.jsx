@@ -87,14 +87,14 @@ export default function Footer() {
       { label: "Destination Weddings", path: "/services/weddings" },
       { label: "Corporate Retreats", path: "/services/corporate-events" },
     ],
-    officeAddress: "MR-01, Plot A 26, Block B, Mohan Cooperative Industry Estate, New Delhi - 110044",
+    officeAddress: "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
     contactPhone: "+91-9871984074",
     contactEmail: "membership@ownholidayclub.com",
     workingHours: "Mon – Sat: 9:30 AM – 6:30 PM",
     globalPresence: "New Delhi · Dubai · London",
     footerBgImage: "/footerimage.jpg",
     footerContact: [
-      { label: "New Delhi Office", content: "MR-01, Plot A 26, Block B, Mohan Cooperative Industry Estate, New Delhi - 110044" },
+      { label: "New Delhi Office", content: "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India." },
       { label: "24/7 Concierge", content: "+91-9871984074" }
     ]
   });
@@ -113,7 +113,29 @@ export default function Footer() {
       .then(res => res.json())
       .then(result => {
         if (result.success && result.data) {
-          setSettings(result.data);
+          setSettings({
+            ...result.data,
+            officeAddress:
+              "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
+            footerContact: [
+              ...(Array.isArray(result.data.footerContact)
+                ? result.data.footerContact.filter(
+                    (item) =>
+                      !/office|address|location|headquarters/i.test(
+                        String(item?.label || ""),
+                      ) &&
+                      !/second floor|mohan cooperative|mohan estate|saidabad/i.test(
+                        String(item?.content || ""),
+                      ),
+                  )
+                : []),
+              {
+                label: "Office Address",
+                content:
+                  "AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.",
+              },
+            ],
+          });
         }
       })
       .catch(err => console.error("Settings fetch error:", err));

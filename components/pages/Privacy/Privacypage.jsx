@@ -368,7 +368,7 @@ export default function PrivacyPolicy() {
                           Address
                         </p>
                         <p className="text-white leading-relaxed">
-                       Second floor, estate, MR- 01, Altf Mohan estate, room no, plot no A. 26, Saidabad, Block B, Mohan Cooperative Industrial Estate, New Delhi, Delhi 110044
+                       AtF 101 Okhla - 5th Floor, 101, NH-19, CRRI, Ishwar Nagar, Okhla, New Delhi, Delhi 110044, India.
                         </p>
                       </div>
                     </div>
