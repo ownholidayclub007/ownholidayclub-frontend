@@ -817,7 +817,6 @@ export default function MembershipPurchasePageContent({
                 </div>
               )}
 
-              {/*
               {currentStep === 2 && (
                 <div className="rounded-[1rem] border border-dashed border-amber-200 bg-amber-50/60 p-4">
                   <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
@@ -832,7 +831,6 @@ export default function MembershipPurchasePageContent({
                   />
                 </div>
               )}
-              */}
 
               <div className="flex flex-col items-center gap-3 pt-4 sm:flex-row sm:justify-center">
                 {currentStep === 2 ? (

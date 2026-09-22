@@ -20,6 +20,7 @@ import Image from "next/image";
 import { getOptimizedImageUrl } from "@/lib/imageOptimizer";
 
 
+     
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -487,4 +488,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+}     

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapPin, Star } from "lucide-react";
 
-const testimonialPages = [
+const fallbackPages = [
   [
     {
       tag: "Family Travel",
@@ -95,7 +95,7 @@ function TestimonialCard({ card }) {
           {card.tag}
         </span>
         <div className="flex gap-0.5">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(card.rating || 5)].map((_, i) => (
             <Star key={i} size={11} fill="#BA7517" color="#BA7517" />
           ))}
         </div>
@@ -122,14 +122,18 @@ function TestimonialCard({ card }) {
 
       {/* Author */}
       <div className="flex items-center gap-2.5 pt-2 border-t border-gray-100">
-        <div
-          className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0"
-          style={{
-            background: `linear-gradient(135deg, ${card.gradient[0]}, ${card.gradient[1]})`,
-          }}
-        >
-          {getInitials(card.name)}
-        </div>
+        {card.image ? (
+          <img src={card.image} alt={card.name} className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
+        ) : (
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0"
+            style={{
+              background: `linear-gradient(135deg, ${card.gradient[0]}, ${card.gradient[1]})`,
+            }}
+          >
+            {getInitials(card.name)}
+          </div>
+        )}
         <div>
           <p className="text-sm font-semibold text-gray-800 leading-tight">
             {card.name}
@@ -146,6 +150,31 @@ function TestimonialCard({ card }) {
 
 export default function TestimonialSection() {
   const [page, setPage] = useState(0);
+  const [testimonialPages, setTestimonialPages] = useState(fallbackPages);
+
+  useEffect(() => {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_OWNHOLIDAYCLUB_BACKEND_URL || "http://localhost:8081";
+    fetch(`${backendUrl}/api/testimonials`)
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("Testimonials request failed"))))
+      .then((result) => {
+        if (!result.success || !result.data?.length) return;
+        const pages = [];
+        for (let index = 0; index < result.data.length; index += 4) {
+          pages.push(
+            result.data.slice(index, index + 4).map((testimonial) => ({
+              ...testimonial,
+              gradient: ["#0F6E56", "#085041"],
+            }))
+          );
+        }
+        setTestimonialPages(pages);
+        setPage(0);
+      })
+      .catch(() => {
+        // Keep the curated fallback cards when the public API is unavailable.
+      });
+  }, []);
 
   return (
     <section className="w-full bg-white py-12 px-4 sm:px-6 lg:px-8">
