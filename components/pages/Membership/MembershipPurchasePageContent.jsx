@@ -18,6 +18,7 @@ import {
 import {
   createMembershipPaymentOrder,
   loadRazorpayScript,
+  saveMembershipPurchaseDetails,
   verifyMembershipPayment,
 } from "@/lib/payments";
 import {
@@ -54,6 +55,7 @@ export default function MembershipPurchasePageContent({
   const [feedback, setFeedback] = useState({ type: "", message: "" });
   const [referralCode, setReferralCode] = useState("");
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [isSavingDetails, setIsSavingDetails] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [baseUrl, setBaseUrl] = useState("https://www.ownholidayclub.com");
   const TierVisualIcon = TIER_ICONS[tier.icon] || Package;
@@ -93,6 +95,7 @@ export default function MembershipPurchasePageContent({
     form.personalDetails.maritalStatus,
   );
   const isBusy =
+    isSavingDetails ||
     submitting ||
     isUploadingFile ||
     mobileState.sending ||
@@ -575,7 +578,33 @@ export default function MembershipPurchasePageContent({
     acceptedTerms: form.acceptedTerms,
   });
 
-  const handleContinue = () => {
+  // Auto-save the details once name, email and mobile are verified, so they
+  // reach the admin panel even if the user leaves before paying.
+  const canAutoSave = Boolean(
+    tier?.id &&
+      form.personalDetails.firstName.trim() &&
+      form.contactDetails.mobile.length === 10 &&
+      mobileState.verified &&
+      isEmailValid(form.contactDetails.email) &&
+      emailState.verified,
+  );
+
+  useEffect(() => {
+    if (!canAutoSave || submitting) return undefined;
+
+    const timer = window.setTimeout(() => {
+      saveMembershipPurchaseDetails({
+        tierId: tier.id,
+        memberDetails: buildSubmissionPayload(),
+        referralCode,
+      }).catch(() => {});
+    }, 1500);
+
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canAutoSave, form, referralCode, submitting]);
+
+  const handleContinue = async () => {
     if (!stepOneValid) {
       showToast({
         type: "error",
@@ -585,8 +614,23 @@ export default function MembershipPurchasePageContent({
       return;
     }
 
-    setCurrentStep(2);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      setIsSavingDetails(true);
+      await saveMembershipPurchaseDetails({
+        tierId: tier.id,
+        memberDetails: buildSubmissionPayload(),
+        referralCode,
+      });
+      setCurrentStep(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      showToast({
+        type: "error",
+        message: error.message || "Unable to save your membership details.",
+      });
+    } finally {
+      setIsSavingDetails(false);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -609,6 +653,13 @@ export default function MembershipPurchasePageContent({
     try {
       setSubmitting(true);
 
+      const memberDetails = buildSubmissionPayload();
+      await saveMembershipPurchaseDetails({
+        tierId: tier.id,
+        memberDetails,
+        referralCode,
+      });
+
       const isScriptLoaded = await loadRazorpayScript();
 
       if (
@@ -619,7 +670,6 @@ export default function MembershipPurchasePageContent({
         throw new Error("Unable to load Razorpay checkout right now.");
       }
 
-      const memberDetails = buildSubmissionPayload();
       const orderData = await createMembershipPaymentOrder({
         tierId: tier.id,
         memberDetails,
@@ -852,8 +902,12 @@ export default function MembershipPurchasePageContent({
                     disabled={isBusy}
                     className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[12px] bg-amber-500 px-6 text-[14px] font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Next Step
-                    <ArrowRight size={16} />
+                    {isSavingDetails ? (
+                      <LoaderCircle size={16} className="animate-spin" />
+                    ) : (
+                      <ArrowRight size={16} />
+                    )}
+                    {isSavingDetails ? "Saving details..." : "Next Step"}
                   </button>
                 ) : (
                   <button

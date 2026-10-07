@@ -9,6 +9,7 @@ import GlobalHolidayLeadWidget from "@/components/GlobalHolidayLeadWidget";
 import Topbar from "@/components/Topbar";
 import SocialSidebar from "@/components/SocialSidebar";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import AppDownloadPopup from "@/components/AppDownloadPopup";
 
 export default function AppShell({ children }) {
   const pathname = usePathname();
@@ -83,6 +84,7 @@ export default function AppShell({ children }) {
       <WhatsAppFloat />
       <Footer />
       <GlobalHolidayLeadWidget />
+      <AppDownloadPopup />
       {isAuthMounted && (
         <div
           className={`fixed inset-0 z-[100] auth-overlay ${
