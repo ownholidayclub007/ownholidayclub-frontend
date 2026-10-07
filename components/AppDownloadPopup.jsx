@@ -11,6 +11,17 @@ const GOOGLE_PLAY_URL =
 const APP_STORE_URL =
   "https://apps.apple.com/in/app/own-holiday-club/id6741328417";
 
+const POPUP_PATHS = [
+  "/",
+  "/about",
+  "/destinations",
+  "/services",
+  "/membership",
+  "/blog",
+  "/list-your-property",
+  "/contactus",
+];
+
 function StoreBadge({ href, label, children }) {
   return (
     <a
@@ -29,11 +40,16 @@ export default function AppDownloadPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  const showOnThisPage = POPUP_PATHS.includes(
+    (pathname || "/").replace(/(.)\/$/, "$1"),
+  );
+
   useEffect(() => {
     setIsOpen(false);
+    if (!showOnThisPage) return undefined;
     const timer = window.setTimeout(() => setIsOpen(true), 900);
     return () => window.clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, showOnThisPage]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -52,7 +68,7 @@ export default function AppDownloadPopup() {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !showOnThisPage) return null;
 
   return (
     <div
@@ -153,7 +169,7 @@ export default function AppDownloadPopup() {
             </StoreBadge>
           </div>
           <Link
-            href="/membership#tiers"
+            href="/membership/purchase?tier=ohc-privilege"
             onClick={() => setIsOpen(false)}
             className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-center text-xs font-semibold text-amber-800 transition hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
           >
