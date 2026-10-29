@@ -5,7 +5,6 @@ import {
   BriefcaseBusiness,
   Building2,
   CalendarDays,
-  CalendarHeart,
   Globe,
   Heart,
   Mail,
@@ -43,13 +42,9 @@ export default function MembershipPurchaseStepOne({
   setEmailState,
   sendOtp,
   verifyOtp,
-  familyEnabled,
-  updateSpouse,
-  updateChild,
-  addChild,
-  setForm,
+  referralCode,
+  setReferralCode,
 }) {
-  const showAnniversary = form.personalDetails.maritalStatus === "Married";
   const [showOfficeAddress, setShowOfficeAddress] = useState(
     Boolean(
       form.addressDetails.office?.addressLine ||
@@ -285,15 +280,6 @@ export default function MembershipPurchaseStepOne({
           required
           icon={Heart}
         />
-        {showAnniversary ? (
-          <InlineDateField
-            label="Anniversary Date"
-            value={form.personalDetails.anniversary}
-            onChange={(value) => updatePersonal("anniversary", value)}
-            placeholder="Anniversary Date"
-            icon={CalendarHeart}
-          />
-        ) : null}
       </div>
       </div>
 
@@ -444,109 +430,23 @@ export default function MembershipPurchaseStepOne({
       </div>
       </div>
 
-      {form.personalDetails.maritalStatus && (
-        <div className="space-y-2.5 pt-2">
-          <h3 className="border-b border-slate-100 pb-1.5 text-sm font-bold uppercase tracking-[0.05em] text-[#C8102E]">
-            Family Details{" "}
-            {form.personalDetails.maritalStatus === "Married" ? (
-              <span className="text-xs text-slate-500 font-medium normal-case">(Compulsory for Married)</span>
-            ) : (
-              <span className="text-xs text-slate-500 font-medium normal-case">(Optional)</span>
-            )}
-          </h3>
-          
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-2">
-            <InputField
-              label="Spouse Name"
-              value={form.familyDetails?.spouse?.name || ""}
-              onChange={(value) => updateSpouse && updateSpouse("name", value)}
-              placeholder="Spouse Name"
-              required={form.personalDetails.maritalStatus === "Married"}
-              icon={User}
-            />
-            <InlineDateField
-              label="Spouse DOB"
-              value={form.familyDetails?.spouse?.dob || ""}
-              onChange={(value) => updateSpouse && updateSpouse("dob", value)}
-              placeholder="DOB"
-              required={form.personalDetails.maritalStatus === "Married"}
-              icon={CalendarDays}
-            />
-            <InputField
-              label="Spouse Mobile"
-              value={form.familyDetails?.spouse?.mobile || ""}
-              onChange={(value) => updateSpouse && updateSpouse("mobile", value.replace(/\D/g, "").slice(0, 10))}
-              placeholder="Mobile Number"
-              required={form.personalDetails.maritalStatus === "Married"}
-              icon={Phone}
-            />
-            <InputField
-              label="Spouse Email"
-              value={form.familyDetails?.spouse?.email || ""}
-              onChange={(value) => updateSpouse && updateSpouse("email", value.toLowerCase())}
-              placeholder="Email Address"
-              required={form.personalDetails.maritalStatus === "Married"}
-              icon={Mail}
-            />
-          </div>
+      <div className="rounded-[1rem] border border-dashed border-amber-200 bg-amber-50/60 p-4">
+        <label
+          htmlFor="membership-referral-code"
+          className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500"
+        >
+          Referral code (optional)
+        </label>
+        <input
+          id="membership-referral-code"
+          type="text"
+          value={referralCode}
+          onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
+          placeholder="Enter referral code"
+          className="w-full border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-amber-500"
+        />
+      </div>
 
-          <div className="mt-4 border border-slate-100 bg-slate-50/50 p-3">
-            <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Children Details</h4>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold text-slate-500 uppercase">No. of Children:</span>
-                <select 
-                  className="h-6 w-12 border border-slate-300 text-xs text-center outline-none"
-                  value={form.familyDetails?.children?.length || 0}
-                  onChange={(e) => {
-                    const count = parseInt(e.target.value, 10);
-                    const currentLen = form.familyDetails?.children?.length || 0;
-                    if (count > currentLen) {
-                      for (let i = 0; i < count - currentLen; i++) addChild && addChild();
-                    } else if (count < currentLen) {
-                      setForm && setForm(prev => ({
-                        ...prev,
-                        familyDetails: {
-                          ...prev.familyDetails,
-                          children: prev.familyDetails.children.slice(0, count)
-                        }
-                      }));
-                    }
-                  }}
-                >
-                  {[0, 1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {form.familyDetails?.children?.map((child, index) => (
-              <div key={index} className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-3 pb-3 border-b border-slate-100 last:border-0 last:mb-0 last:pb-0">
-                <InputField
-                  label={`Child ${index + 1} Name`}
-                  value={child.name || ""}
-                  onChange={(value) => updateChild && updateChild(index, "name", value)}
-                  placeholder="Full Name"
-                  icon={User}
-                />
-                <SelectField
-                  label="Gender"
-                  value={child.gender || ""}
-                  onChange={(value) => updateChild && updateChild(index, "gender", value)}
-                  options={GENDER_OPTIONS}
-                  icon={Users}
-                />
-                <InlineDateField
-                  label="DOB"
-                  value={child.dob || ""}
-                  onChange={(value) => updateChild && updateChild(index, "dob", value)}
-                  placeholder="Date of Birth"
-                  icon={CalendarDays}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

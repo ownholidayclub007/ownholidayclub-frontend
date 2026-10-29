@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
-  ArrowRight,
   CreditCard,
   Crown,
   Gem,
   LoaderCircle,
   Package,
+  ShieldCheck,
   Sparkles,
   Star,
-  Wallet,
 } from "lucide-react";
 import {
   createMembershipPaymentOrder,
   loadRazorpayScript,
+  savePostPaymentMembershipDetails,
   saveMembershipPurchaseDetails,
   verifyMembershipPayment,
 } from "@/lib/payments";
@@ -54,39 +54,11 @@ export default function MembershipPurchasePageContent({
   const [emailState, setEmailState] = useState(createVerificationState);
   const [feedback, setFeedback] = useState({ type: "", message: "" });
   const [referralCode, setReferralCode] = useState("");
+  const [paidUserId, setPaidUserId] = useState("");
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isSavingDetails, setIsSavingDetails] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [baseUrl, setBaseUrl] = useState("https://www.ownholidayclub.com");
   const TierVisualIcon = TIER_ICONS[tier.icon] || Package;
-  const memberFeeAmount = useMemo(
-    () => parseCurrencyAmount(tier.price),
-    [tier.price],
-  );
-  const adminFeeAmount = useMemo(
-    () => parseCurrencyAmount(tier.adminFee),
-    [tier.adminFee],
-  );
-  const totalPayableAmount = memberFeeAmount + adminFeeAmount;
-  const memberFeeLabel = useMemo(
-    () => formatCurrencyAmount(memberFeeAmount, tier.price),
-    [memberFeeAmount, tier.price],
-  );
-  const adminFeeLabel = useMemo(
-    () => formatCurrencyAmount(adminFeeAmount, tier.adminFee),
-    [adminFeeAmount, tier.adminFee],
-  );
-  const totalPayableLabel = useMemo(
-    () =>
-      formatCurrencyAmount(
-        totalPayableAmount,
-        `${String(tier.price || "").trim()} + ${String(
-          tier.adminFee || "",
-        ).trim()}`,
-      ),
-    [totalPayableAmount, tier.adminFee, tier.price],
-  );
-
   const fullName = useMemo(
     () => joinMemberName(form.personalDetails),
     [form.personalDetails],
@@ -102,12 +74,6 @@ export default function MembershipPurchasePageContent({
     mobileState.verifying ||
     emailState.sending ||
     emailState.verifying;
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setBaseUrl(window.location.origin);
-    }
-  }, []);
 
   useEffect(() => {
     if (!feedback.message) {
@@ -173,15 +139,14 @@ export default function MembershipPurchasePageContent({
   }, [emailState.verified, form, mobileState.verified]);
 
   const stepTwoChecks = useMemo(() => {
-    const { documents, acceptedTerms } = form;
+    const { documents } = form;
 
     return [
       {
         label: "Aadhaar card",
         complete: Boolean(
           documents.idProof?.dataUrl ||
-            documents.idProof?.url ||
-            documents.idProof?.name,
+            documents.idProof?.url,
         ),
       },
       {
@@ -192,16 +157,25 @@ export default function MembershipPurchasePageContent({
         label: "Address proof file",
         complete: Boolean(
           documents.addressProof?.dataUrl ||
-            documents.addressProof?.url ||
-            documents.addressProof?.name,
+            documents.addressProof?.url,
         ),
       },
     ];
   }, [form]);
 
   const stepTwoValid = useMemo(
-    () => stepTwoChecks.every((check) => check.complete),
-    [stepTwoChecks],
+    () => {
+      const spouse = form.familyDetails.spouse;
+      return Boolean(
+        stepTwoChecks.every((check) => check.complete) &&
+          (form.personalDetails.maritalStatus !== "Married" ||
+            (spouse.name.trim() &&
+              spouse.dob &&
+              spouse.mobile.replace(/\D/g, "").length === 10 &&
+              isEmailValid(spouse.email))),
+      );
+    },
+    [form, stepTwoChecks],
   );
 
   const showToast = (nextFeedback) => setFeedback(nextFeedback);
@@ -590,7 +564,7 @@ export default function MembershipPurchasePageContent({
   );
 
   useEffect(() => {
-    if (!canAutoSave || submitting) return undefined;
+    if (!canAutoSave || submitting || paidUserId) return undefined;
 
     const timer = window.setTimeout(() => {
       saveMembershipPurchaseDetails({
@@ -602,45 +576,19 @@ export default function MembershipPurchasePageContent({
 
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canAutoSave, form, referralCode, submitting]);
-
-  const handleContinue = async () => {
-    if (!stepOneValid) {
-      showToast({
-        type: "error",
-        message:
-          "Complete the required fields and verify your mobile number and email to continue.",
-      });
-      return;
-    }
-
-    try {
-      setIsSavingDetails(true);
-      await saveMembershipPurchaseDetails({
-        tierId: tier.id,
-        memberDetails: buildSubmissionPayload(),
-        referralCode,
-      });
-      setCurrentStep(2);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (error) {
-      showToast({
-        type: "error",
-        message: error.message || "Unable to save your membership details.",
-      });
-    } finally {
-      setIsSavingDetails(false);
-    }
-  };
+  }, [canAutoSave, form, paidUserId, referralCode, submitting]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stepTwoValid) {
+    if (currentStep !== 1) {
+      return;
+    }
+
+    if (!stepOneValid) {
       showToast({
         type: "error",
-        message:
-          "Please complete the documents section and accept the terms before payment.",
+        message: "Please complete and verify your personal details before payment.",
       });
       return;
     }
@@ -708,16 +656,24 @@ export default function MembershipPurchasePageContent({
               ...paymentResponse,
             });
 
-            window.localStorage.setItem(
-              "ohc_user_id",
-              String(verificationResult?.user?._id || ""),
-            );
+            const userId = String(verificationResult?.user?._id || "");
+            if (!userId) {
+              throw new Error("Payment was verified, but your member account could not be loaded.");
+            }
+            window.localStorage.setItem("ohc_user_id", userId);
             window.localStorage.setItem(
               "ohc_user",
-              JSON.stringify(verificationResult?.user || {}),
+              JSON.stringify(verificationResult.user),
             );
             window.dispatchEvent(new Event("ohc-auth-changed"));
-            router.push("/profile?tab=payment");
+            setPaidUserId(userId);
+            setCurrentStep(2);
+            setSubmitting(false);
+            setFeedback({
+              type: "success",
+              message: "Payment successful. Please complete your family details and documents.",
+            });
+            window.scrollTo({ top: 0, behavior: "smooth" });
           } catch (error) {
             setSubmitting(false);
             showToast({
@@ -743,6 +699,60 @@ export default function MembershipPurchasePageContent({
         type: "error",
         message: error.message || "Unable to start payment.",
       });
+    }
+  };
+
+  const handleCompleteProfile = async (event) => {
+    event.preventDefault();
+
+    if (!stepTwoValid) {
+      const spouse = form.familyDetails.spouse;
+      const hasValidSpouseDetails = Boolean(
+        spouse.name.trim() &&
+          spouse.dob &&
+          spouse.mobile.replace(/\D/g, "").length === 10 &&
+          isEmailValid(spouse.email),
+      );
+      showToast({
+        type: "error",
+        message:
+          form.personalDetails.maritalStatus === "Married" &&
+          !hasValidSpouseDetails
+            ? "Please complete all required spouse details (name, date of birth, mobile, and email)."
+            : "Please upload your Aadhaar card and address proof to continue.",
+      });
+      return;
+    }
+
+    if (!paidUserId) {
+      showToast({
+        type: "error",
+        message: "Your paid membership could not be found. Please contact support.",
+      });
+      return;
+    }
+
+    try {
+      setIsSavingDetails(true);
+      const memberDetails = buildSubmissionPayload();
+      const response = await savePostPaymentMembershipDetails({
+        userId: paidUserId,
+        memberDetails,
+      });
+
+      window.localStorage.setItem(
+        "ohc_user",
+        JSON.stringify(response?.user || {}),
+      );
+      window.dispatchEvent(new Event("ohc-auth-changed"));
+      router.push("/profile?tab=payment");
+    } catch (error) {
+      showToast({
+        type: "error",
+        message: error.message || "Unable to save your family details and documents.",
+      });
+    } finally {
+      setIsSavingDetails(false);
     }
   };
 
@@ -777,10 +787,10 @@ export default function MembershipPurchasePageContent({
                 tone={currentStep === 1 ? "accent" : "default"}
               />
               <PurchaseOverviewCard
-                icon={currentStep === 2 ? LoaderCircle : CreditCard}
+                icon={currentStep === 2 ? LoaderCircle : ShieldCheck}
                 label="Step 2"
-                value="Finalize & Pay"
-                hint="Documents and payment"
+                value="Complete Profile"
+                hint="Family details and documents"
                 tone={currentStep === 2 ? "accent" : "default"}
               />
             </div>
@@ -801,7 +811,10 @@ export default function MembershipPurchasePageContent({
               </div>
             ) : null}
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form
+              onSubmit={currentStep === 2 ? handleCompleteProfile : handleSubmit}
+              className="space-y-3"
+            >
               {currentStep === 1 ? (
                 <MembershipPurchaseStepOne
                   form={form}
@@ -815,23 +828,21 @@ export default function MembershipPurchasePageContent({
                   setEmailState={setEmailState}
                   sendOtp={sendOtp}
                   verifyOtp={verifyOtp}
-                  familyEnabled={familyEnabled}
-                  updateSpouse={updateSpouse}
-                  updateChild={updateChild}
-                  addChild={addChild}
-                  setForm={setForm}
+                  referralCode={referralCode}
+                  setReferralCode={setReferralCode}
                 />
               ) : (
                 <MembershipPurchaseStepTwo
                   form={form}
                   familyEnabled={familyEnabled}
+                  maritalStatus={form.personalDetails.maritalStatus}
+                  anniversary={form.personalDetails.anniversary}
+                  updatePersonal={updatePersonal}
                   updateSpouse={updateSpouse}
                   updateChild={updateChild}
                   addChild={addChild}
                   updateDocumentType={updateDocumentType}
                   handleFileChange={handleFileChange}
-                  setForm={setForm}
-                  baseUrl={baseUrl}
                 />
               )}
 
@@ -867,49 +878,8 @@ export default function MembershipPurchasePageContent({
                 </div>
               )}
 
-              {currentStep === 2 && (
-                <div className="rounded-[1rem] border border-dashed border-amber-200 bg-amber-50/60 p-4">
-                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
-                    Referral code (optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={referralCode}
-                    onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
-                    placeholder="Enter referral code"
-                    className="w-full border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-amber-500"
-                  />
-                </div>
-              )}
-
               <div className="flex flex-col items-center gap-3 pt-4 sm:flex-row sm:justify-center">
-                {currentStep === 2 ? (
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(1)}
-                    disabled={isBusy}
-                    className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[12px] border border-slate-200 bg-white px-4 text-sm font-medium text-slate-500 transition hover:border-amber-200 hover:text-amber-600 disabled:opacity-60"
-                  >
-                    <ArrowLeft size={16} />
-                    Back to step 1
-                  </button>
-                ) : null}
-
                 {currentStep === 1 ? (
-                  <button
-                    type="button"
-                    onClick={handleContinue}
-                    disabled={isBusy}
-                    className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[12px] bg-amber-500 px-6 text-[14px] font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {isSavingDetails ? (
-                      <LoaderCircle size={16} className="animate-spin" />
-                    ) : (
-                      <ArrowRight size={16} />
-                    )}
-                    {isSavingDetails ? "Saving details..." : "Next Step"}
-                  </button>
-                ) : (
                   <button
                     type="submit"
                     disabled={isBusy}
@@ -920,7 +890,20 @@ export default function MembershipPurchasePageContent({
                     ) : (
                       <CreditCard size={16} />
                     )}
-                    {submitting ? "Processing..." : "Continue to Payment"}
+                    {submitting ? "Processing..." : "Pay Now"}
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isBusy}
+                    className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[12px] bg-amber-500 px-6 text-[14px] font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isSavingDetails ? (
+                      <LoaderCircle size={16} className="animate-spin" />
+                    ) : (
+                      <ShieldCheck size={16} />
+                    )}
+                    {isSavingDetails ? "Saving details..." : "Save Details & Continue"}
                   </button>
                 )}
               </div>
@@ -981,20 +964,4 @@ function PurchaseOverviewCard({
       </div>
     </div>
   );
-}
-
-function parseCurrencyAmount(value) {
-  const normalized = String(value || "").replace(/[^0-9.]/g, "");
-  const amount = Number(normalized);
-  return Number.isFinite(amount) ? amount : 0;
-}
-
-function formatCurrencyAmount(value, fallback = "") {
-  const amount = Number(value);
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return String(fallback || "").trim();
-  }
-
-  return `Rs${new Intl.NumberFormat("en-IN").format(amount)}`;
 }

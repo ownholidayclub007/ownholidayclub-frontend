@@ -98,6 +98,6 @@ export default function AppShell({ children }) {
           </div>
         </div>
       )}
-    </div>
+    </div>   
   );
 }

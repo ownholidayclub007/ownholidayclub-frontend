@@ -5,11 +5,11 @@ import {
   Plus,
   Baby,
   CalendarDays,
+  CalendarHeart,
   FileText,
   ImageIcon,
   Mail,
   Phone,
-  ShieldCheck,
   Users,
   User,
 } from "lucide-react";
@@ -27,13 +27,14 @@ import {
 export default function MembershipPurchaseStepTwo({
   form,
   familyEnabled,
+  maritalStatus,
+  anniversary,
+  updatePersonal,
   updateSpouse,
   updateChild,
   addChild,
   updateDocumentType,
   handleFileChange,
-  setForm,
-  baseUrl,
 }) {
   return (
     <div className="space-y-3">
@@ -44,20 +45,34 @@ export default function MembershipPurchaseStepTwo({
             Family Detail
           </div>
 
+          {maritalStatus === "Married" ? (
+            <div className="max-w-md">
+              <InputField
+                label="Anniversary Date"
+                type="date"
+                value={anniversary}
+                onChange={(value) => updatePersonal("anniversary", value)}
+                icon={CalendarHeart}
+              />
+            </div>
+          ) : null}
+
           <div className="grid gap-2 md:grid-cols-2">
             <InputField
-              label="Spouse Name"
+              label={maritalStatus === "Married" ? "Spouse Name *" : "Spouse Name"}
               value={form.familyDetails.spouse.name}
               onChange={(value) => updateSpouse("name", value)}
-              placeholder="Spouse Name (Optional)"
+              placeholder="Spouse Name"
+              required={maritalStatus === "Married"}
               labelHidden
               icon={User}
             />
             <InputField
-              label="Spouse DOB"
+              label={maritalStatus === "Married" ? "Spouse DOB *" : "Spouse DOB"}
               type="date"
               value={form.familyDetails.spouse.dob}
               onChange={(value) => updateSpouse("dob", value)}
+              required={maritalStatus === "Married"}
               labelHidden
               icon={CalendarDays}
             />
@@ -71,7 +86,8 @@ export default function MembershipPurchaseStepTwo({
               onChange={(value) =>
                 updateSpouse("email", value.trim().toLowerCase())
               }
-              placeholder="Spouse Email (Optional)"
+              placeholder={maritalStatus === "Married" ? "Spouse Email" : "Spouse Email (Optional)"}
+              required={maritalStatus === "Married"}
               labelHidden
               icon={Mail}
             />
@@ -81,7 +97,8 @@ export default function MembershipPurchaseStepTwo({
               onChange={(value) =>
                 updateSpouse("mobile", value.replace(/\D/g, "").slice(0, 10))
               }
-              placeholder="Spouse Mobile (Optional)"
+              placeholder={maritalStatus === "Married" ? "Spouse Mobile" : "Spouse Mobile (Optional)"}
+              required={maritalStatus === "Married"}
               labelHidden
               icon={Phone}
             />
