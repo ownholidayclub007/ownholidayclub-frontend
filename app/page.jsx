@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import HomePage from "@/components/pages/Home/HomePage";
 import { getCombinedMetadata } from "@/lib/metadata";
 
