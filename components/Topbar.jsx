@@ -63,7 +63,7 @@ const Topbar = () => {
         .ohc-tb-link:hover { color: #ffffff !important; }
       `}</style>
 
-      {/* Topbar — in document flow, scrolls away naturally */}
+    
       <div
         style={{
           height: "36px",
